@@ -1,21 +1,27 @@
 const jwt = require('jsonwebtoken');
-const logger = require('../logger')
+const logger = require('../logger');
+const config = require('../config/config.js');
 
 module.exports = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      logger.info('Invalid user ID')
-      throw 'Invalid user ID';
-    } else {
-      next();
-    }
-  } catch {
-    logger.info('Invalid request!');
-    res.status(401).json({
-      error: new Error('Invalid request!')
-    }).end();
+
+  if (!req.headers.authorization) {
+    logger.info('Authorization header not defined');
+    res.status(404).json({ msg: 'Authorization header not defined' });
+    return;
   }
+
+  const token = req.headers.authorization.split(' ')[1];
+
+  try {
+    const verifiedToken = jwt.verify(token, config.secretToken);
+    logger.info('Token verified');
+    req.user = verifiedToken;
+    next();
+  }
+
+  catch {
+    logger.error('Token Not Valid');
+    res.status(401).json({ msg: 'Token not valid.' }).end();
+  }
+
 };

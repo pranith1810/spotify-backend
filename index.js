@@ -4,7 +4,10 @@ const dbInitialize = require('./database/dbInitialize');
 
 const app = express();
 const signUp = require('./routes/signUp');
+const login = require('./routes/login');
 app.use(express.json());
+
+const auth = require('./middleware/auth')
 
 dbInitialize();
 
@@ -13,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/signUp', signUp);
+app.use('/login', login);
 
 app.use((req,res,next) => {
   const err = new Error('Page Not Found');

@@ -2,6 +2,7 @@ const { createLogger, transports, format } = require('winston');
 
 
 const myFormat = format.combine(
+    format.colorize(),
     format.timestamp(),
     format.simple()
     )
