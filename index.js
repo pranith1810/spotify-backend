@@ -1,12 +1,12 @@
 const express = require('express');
-const app = express();
 const logger = require('./logger');
 
+const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the back-end of Spotify')
-  })
+  res.status(200).json({ msg: 'Welcome to the back-end of Spotify' }).end();
+});
 
-  app.listen(3000, () => {
-    logger.info(`Server is listening at 3000`)
-  })
+app.listen(3000, () => {
+  logger.info('Server is listening at 3000');
+});
