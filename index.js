@@ -1,7 +1,12 @@
 const express = require('express');
 const logger = require('./logger');
+const dbInitialize = require('./database/dbInitialize');
 
 const app = express();
+
+dbInitialize();
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).json({ msg: 'Welcome to the back-end of Spotify' }).end();
