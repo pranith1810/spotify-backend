@@ -8,15 +8,13 @@ const logger = require('../logger');
 
 const { connection } = require('../database/dbConnect');
 const router = express.Router();
-const {validateDate, validateEmpty , validateUsername, validateEmail, validatePassword} = require('../validator');
-
+const { validateDate, validateEmpty, validateUsername, validateEmail, validatePassword } = require('../validator');
 
 const postUser = async (req, res, next) => {
-
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         logger.info(JSON.stringify(errors));
-        return res.status(422).json({msg:errors.errors[0].msg});
+        return res.status(422).json({ msg: errors.errors[0].msg });
     }
 
     let hash;
@@ -53,8 +51,7 @@ const postUser = async (req, res, next) => {
         logger.error(JSON.stringify(err));
         next(new Error(`Internal server error, can't add the user`));
     }
-}
-
+};
 
 router.post('/', [
     validateEmpty('name'),
@@ -62,8 +59,7 @@ router.post('/', [
     validateEmail('email'),
     validatePassword('password'),
     validateDate('date_of_birth'),
-    validateEmpty('gender')
-], postUser)
-
+    validateEmpty('gender'),
+], postUser);
 
 module.exports = router;
