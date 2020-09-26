@@ -233,4 +233,17 @@ async function dbInitialize() {
   }
 }
 
-module.exports = dbInitialize;
+function createDbAndTables() {
+  return new Promise((resolve, reject) => {
+    dbInitialize()
+      .then(() => {
+        logger.info('Database initialization successful');
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+module.exports = createDbAndTables;
