@@ -38,7 +38,7 @@ function createUserTable() {
         password TEXT,
         img_url TEXT,
         is_active BOOLEAN DEFAULT FALSE,
-        data_of_birth DATETIME,
+        date_of_birth DATETIME,
         gender TEXT
     );`;
 
