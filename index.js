@@ -6,6 +6,7 @@ const createDbAndTables = require('./database/dbInitialize');
 const signUp = require('./routes/signUp');
 const login = require('./routes/login');
 const userProfile = require('./routes/userProfile');
+const albums = require('./routes/albums');
 
 const app = express();
 
@@ -21,6 +22,7 @@ createDbAndTables()
     app.use('/signUp', signUp);
     app.use('/login', login);
     app.use('/user', userProfile);
+    app.use('/albums', albums);
 
     app.use((req, res, next) => {
       const err = new Error('Page Not Found');
