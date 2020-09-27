@@ -1,0 +1,27 @@
+[
+  {
+    "id": "ab4f7b0f-f1ff-432f-a720-b70cf5ae782d",
+    "name": "Dil Bechara",
+    "img_url": "https://spotifycohort13.s3.ap-south-1.amazonaws.com/albumsImages/dil-bechara-660.jpg"
+  },
+  {
+    "id": "aff8bcf9-d4b3-40a0-ac89-c89adc60ddd5",
+    "name": "Gully Boy",
+    "img_url": "https://spotifycohort13.s3.ap-south-1.amazonaws.com/albumsImages/gully+boy.jpg"
+  },
+  {
+    "id": "99afda98-4e06-4783-9c95-b560357df0ca",
+    "name": "Kabir Singh",
+    "img_url": "https://spotifycohort13.s3.ap-south-1.amazonaws.com/albumsImages/kabir-singh.jpg"
+  },
+  {
+    "id": "6962032e-8df0-4ecf-b3b2-3efd74d2524e",
+    "name": "Aiyaary",
+    "img_url": "https://spotifycohort13.s3.ap-south-1.amazonaws.com/albumsImages/Aiyaary.jpeg"
+  },
+  {
+    "id": "571a27ce-7326-4a1a-a3c7-1e0c3e9ce3f8",
+    "name": "Baaghi 2",
+    "img_url": "https://spotifycohort13.s3.ap-south-1.amazonaws.com/albumsImages/baaghi2.jpeg"
+  }
+]

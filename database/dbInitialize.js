@@ -1,6 +1,8 @@
 const { connection } = require('./dbConnect');
 const config = require('../config/config.js');
 const logger = require('../logger.js');
+const initialAlbumsData = require('../seedData/initialAlbumData.json');
+const initialSongsData = require('../seedData/initialSongsData.json');
 
 function createDb() {
   return new Promise((resolve, reject) => {
@@ -56,7 +58,8 @@ function createAlbumsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS albums(
                     id VARCHAR(36) NOT NULL PRIMARY KEY,
-                    name TEXT
+                    name TEXT,
+                    img_url TEXT
                     );`;
 
     connection.query(query, (err) => {
@@ -69,6 +72,22 @@ function createAlbumsTable() {
   });
 }
 
+function insertIntoAlbumsTable() {
+  return new Promise((resolve, reject) => {
+    initialAlbumsData.forEach((object) => {
+      connection.query(
+        `USE ${config.database}; INSERT IGNORE INTO albums SET ?`, object, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        },
+      );
+    });
+  });
+}
+
 function createSongsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS songs(
@@ -76,7 +95,6 @@ function createSongsTable() {
                     name TEXT,
                     duration  INT,
                     audio_url TEXT,
-                    img_url TEXT,
                     album_id VARCHAR(36) REFERENCES albums(id)
                     );`;
 
@@ -86,6 +104,22 @@ function createSongsTable() {
       } else {
         resolve();
       }
+    });
+  });
+}
+
+function insertIntoSongsTable() {
+  return new Promise((resolve, reject) => {
+    initialSongsData.forEach((object) => {
+      connection.query(
+        `USE ${config.database}; INSERT IGNORE INTO songs SET ?`, object, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        },
+      );
     });
   });
 }
@@ -113,23 +147,6 @@ function createPlaylistsTable() {
     const query = `CREATE TABLE IF NOT EXISTS playlists(
                     id VARCHAR(36) NOT NULL PRIMARY KEY,
                     name TEXT
-                    );`;
-
-    connection.query(query, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-function createSongArtistsTable() {
-  return new Promise((resolve, reject) => {
-    const query = `CREATE TABLE IF NOT EXISTS song_artists(
-                    song_id VARCHAR(36) REFERENCES songs(id),
-                    artist_id VARCHAR(36) REFERENCES artists(id)
                     );`;
 
     connection.query(query, (err) => {
@@ -218,10 +235,11 @@ async function dbInitialize() {
     logger.info(`Using ${config.database} database`);
     await createUserTable();
     await createAlbumsTable();
+    await insertIntoAlbumsTable();
     await createSongsTable();
+    await insertIntoSongsTable();
     await createArtistsTable();
     await createPlaylistsTable();
-    await createSongArtistsTable();
     await createUserPlaylistsTable();
     await createPlaylistSongsTable();
     await createArtistSongsTable();
