@@ -1,4 +1,4 @@
-function getAlbumSongs(connection, albumId) {
+function getArtistSongs(connection, artistId) {
   return new Promise((resolve, reject) => {
     const query = `SELECT distinct songs.id as song_id, songs.name as song_name, duration, audio_url,artists.name as artist_name, albums.img_url as img_url FROM songs
                     INNER JOIN artist_songs 
@@ -7,9 +7,9 @@ function getAlbumSongs(connection, albumId) {
                     on songs.album_id = albums.id
                     INNER JOIN artists
                     on artists.id = artist_songs.artist_id
-                    where album_id = ?`;
+                    where songs.id IN (select song_id from artist_songs where artist_id =?)`;
 
-    connection.query(query, [albumId], (err, data) => {
+    connection.query(query, [artistId], (err, data) => {
       if (err) {
         reject(err);
       } else {
@@ -19,4 +19,4 @@ function getAlbumSongs(connection, albumId) {
   });
 }
 
-module.exports = getAlbumSongs;
+module.exports = getArtistSongs;

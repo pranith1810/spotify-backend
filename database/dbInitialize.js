@@ -3,6 +3,8 @@ const config = require('../config/config.js');
 const logger = require('../logger.js');
 const initialAlbumsData = require('../seedData/initialAlbumData.json');
 const initialSongsData = require('../seedData/initialSongsData.json');
+const initialArtistsData = require('../seedData/initialArtistsData.json');
+const initialArtistSongsData = require('../seedData/initialArtistSongsData.json');
 
 function createDb() {
   return new Promise((resolve, reject) => {
@@ -142,6 +144,22 @@ function createArtistsTable() {
   });
 }
 
+function insertIntoArtistsTable() {
+  return new Promise((resolve, reject) => {
+    initialArtistsData.forEach((object) => {
+      connection.query(
+        `USE ${config.database}; INSERT IGNORE INTO artists SET ?`, object, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        },
+      );
+    });
+  });
+}
+
 function createPlaylistsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS playlists(
@@ -210,6 +228,22 @@ function createArtistSongsTable() {
   });
 }
 
+function insertIntoArtistSongsTable() {
+  return new Promise((resolve, reject) => {
+    initialArtistSongsData.forEach((object) => {
+      connection.query(
+        `USE ${config.database}; INSERT IGNORE INTO artist_songs SET ?`, object, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        },
+      );
+    });
+  });
+}
+
 function createUserLikedSongsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS user_liked_songs(
@@ -239,10 +273,12 @@ async function dbInitialize() {
     await createSongsTable();
     await insertIntoSongsTable();
     await createArtistsTable();
+    await insertIntoArtistsTable();
     await createPlaylistsTable();
     await createUserPlaylistsTable();
     await createPlaylistSongsTable();
     await createArtistSongsTable();
+    await insertIntoArtistSongsTable();
     await createUserLikedSongsTable();
     logger.info('All tables are created successfully');
   } catch (error) {
