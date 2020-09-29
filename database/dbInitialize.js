@@ -1,36 +1,9 @@
 const { connection } = require('./dbConnect');
-const config = require('../config/config.js');
 const logger = require('../logger.js');
 const initialAlbumsData = require('../seedData/initialAlbumData.json');
 const initialSongsData = require('../seedData/initialSongsData.json');
 const initialArtistsData = require('../seedData/initialArtistsData.json');
 const initialArtistSongsData = require('../seedData/initialArtistSongsData.json');
-
-function createDb() {
-  return new Promise((resolve, reject) => {
-    const createDbQuery = `CREATE DATABASE IF NOT EXISTS ${config.database}`;
-    connection.query(createDbQuery, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-function useDb() {
-  return new Promise((resolve, reject) => {
-    const useDbQuery = `USE ${config.database}`;
-    connection.query(useDbQuery, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
 
 function createUserTable() {
   return new Promise((resolve, reject) => {
@@ -78,7 +51,7 @@ function insertIntoAlbumsTable() {
   return new Promise((resolve, reject) => {
     initialAlbumsData.forEach((object) => {
       connection.query(
-        `USE ${config.database}; INSERT IGNORE INTO albums SET ?`, object, (error) => {
+        'INSERT IGNORE INTO albums SET ?', object, (error) => {
           if (error) {
             reject(error);
           } else {
@@ -114,7 +87,7 @@ function insertIntoSongsTable() {
   return new Promise((resolve, reject) => {
     initialSongsData.forEach((object) => {
       connection.query(
-        `USE ${config.database}; INSERT IGNORE INTO songs SET ?`, object, (error) => {
+        'INSERT IGNORE INTO songs SET ?', object, (error) => {
           if (error) {
             reject(error);
           } else {
@@ -148,7 +121,7 @@ function insertIntoArtistsTable() {
   return new Promise((resolve, reject) => {
     initialArtistsData.forEach((object) => {
       connection.query(
-        `USE ${config.database}; INSERT IGNORE INTO artists SET ?`, object, (error) => {
+        'INSERT IGNORE INTO artists SET ?', object, (error) => {
           if (error) {
             reject(error);
           } else {
@@ -217,7 +190,7 @@ function insertIntoArtistSongsTable() {
   return new Promise((resolve, reject) => {
     initialArtistSongsData.forEach((object) => {
       connection.query(
-        `USE ${config.database}; INSERT IGNORE INTO artist_songs SET ?`, object, (error) => {
+        'INSERT IGNORE INTO artist_songs SET ?', object, (error) => {
           if (error) {
             reject(error);
           } else {
@@ -248,10 +221,6 @@ function createUserLikedSongsTable() {
 
 async function dbInitialize() {
   try {
-    await createDb();
-    logger.info(`${config.database} database created`);
-    await useDb();
-    logger.info(`Using ${config.database} database`);
     await createUserTable();
     await createAlbumsTable();
     await insertIntoAlbumsTable();
