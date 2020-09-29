@@ -2,13 +2,13 @@
 const express = require('express');
 const { connection } = require('../database/dbConnect.js');
 const logger = require('../logger.js');
-// const auth = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const getAllAlbums = require('../database/getAllAlbums');
 const getAlbumSongs = require('../database/getAlbumSongs');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', auth, (req, res, next) => {
   getAllAlbums(connection)
     .then((data) => {
       logger.info('Albums are sent successfully!');
@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', auth, (req, res, next) => {
   getAlbumSongs(connection, req.params.id)
     .then((data) => {
       const albumSongs = [];
