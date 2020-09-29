@@ -9,6 +9,7 @@ const userProfile = require('./routes/userProfile');
 const albums = require('./routes/albums');
 const artists = require('./routes/artists');
 const playlists = require('./routes/playlists');
+const likedSongs = require('./routes/likedSongs');
 
 const app = express();
 
@@ -27,6 +28,7 @@ createDbAndTables()
     app.use('/albums', albums);
     app.use('/artists', artists);
     app.use('/playlists', playlists);
+    app.use('/liked', likedSongs);
 
     app.use((req, res, next) => {
       const err = new Error('Page Not Found');
