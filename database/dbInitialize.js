@@ -160,28 +160,12 @@ function insertIntoArtistsTable() {
   });
 }
 
-function createPlaylistsTable() {
-  return new Promise((resolve, reject) => {
-    const query = `CREATE TABLE IF NOT EXISTS playlists(
-                    id VARCHAR(36) NOT NULL PRIMARY KEY,
-                    name TEXT
-                    );`;
-
-    connection.query(query, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
 function createUserPlaylistsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS user_playlists(
                     user_id VARCHAR(36) REFERENCES users(id),
-                    playlist_id VARCHAR(36) REFERENCES playlists(id)
+                    playlist_id VARCHAR(36) NOT NULL PRIMARY KEY,
+                    name TEXT
                     );`;
 
     connection.query(query, (err) => {
@@ -215,7 +199,8 @@ function createArtistSongsTable() {
   return new Promise((resolve, reject) => {
     const query = `CREATE TABLE IF NOT EXISTS artist_songs(
                     artist_id VARCHAR(36) REFERENCES artists(id),
-                    song_id VARCHAR(36) REFERENCES songs(id)
+                    song_id VARCHAR(36) REFERENCES songs(id),
+                    primary key(artist_id, song_id)
                     );`;
 
     connection.query(query, (err) => {
@@ -274,7 +259,6 @@ async function dbInitialize() {
     await insertIntoSongsTable();
     await createArtistsTable();
     await insertIntoArtistsTable();
-    await createPlaylistsTable();
     await createUserPlaylistsTable();
     await createPlaylistSongsTable();
     await createArtistSongsTable();
