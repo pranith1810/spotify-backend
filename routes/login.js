@@ -12,6 +12,29 @@ const { validateEmail, validatePassword } = require('../validator');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *    summary: Login as a user
+ *    description: Use to login as a user with the given details
+ *    parameters:
+ *      - name: email
+ *        in: body
+ *        description: email of the user
+ *      - name: password
+ *        in: body
+ *        description: password of the user
+ *    responses:
+ *        '200':
+ *           description: User logged in successfully
+ *        '422':
+ *           description: Login form validation error
+ *        '409':
+ *           description: User does not exist
+ *        '401':
+ *           description: Password does not match
+ */
 router.post('/', [
   validateEmail('email'),
   validatePassword('password'),

@@ -56,6 +56,39 @@ const postUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @swagger
+ * /signup:
+ *  post:
+ *    summary: To add a new user
+ *    description: Use to signup as a new user with the given details
+ *    parameters:
+ *      - name: name
+ *        in: body
+ *        description: name of the user
+ *      - name: username
+ *        in: body
+ *        description: username of the user
+ *      - name: password
+ *        in: body
+ *        description: password of the user
+ *      - name: email
+ *        in: body
+ *        description: email of the user
+ *      - name: date_of_birth
+ *        in: body
+ *        description: Date of birth of the user
+ *      - name: gender
+ *        in: body
+ *        description: Gender of the user
+ *    responses:
+ *        '200':
+ *           description: User signed up successfully
+ *        '422':
+ *           description: Signup form validation error
+ *        '409':
+ *           description: User already exists
+ */
 router.post('/', [
   validateEmpty('name'),
   validateUsername('username'),

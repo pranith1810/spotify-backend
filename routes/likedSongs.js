@@ -8,6 +8,17 @@ const getUserLikedSongs = require('../database/getUserLikedSongs');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /liked/add:
+ *  post:
+ *    summary: add a song as a liked song
+ *    description: Use to add a song as a liked song for a user
+ *    parameters:
+ *      - name: songId
+ *        in: body
+ *        description: Id of song
+ */
 router.post('/add', auth, (req, res, next) => {
   const userLikedSong = {
     user_id: req.user.id,
@@ -24,6 +35,13 @@ router.post('/add', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /liked:
+ *    get:
+ *      summary: Get liked songs
+ *      description: Get all the liked songs of a user
+ */
 router.get('/', auth, (req, res, next) => {
   getUserLikedSongs(connection, req.user.id)
     .then((data) => {

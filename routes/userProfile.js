@@ -6,6 +6,13 @@ const getUserProfile = require('../database/getUserProfile');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /profile:
+ *  get:
+ *    summary: Get user profile
+ *    description: Use to get the user profile details
+ */
 router.get('/profile', auth, (req, res, next) => {
   getUserProfile(connection, req.user.id)
     .then((data) => {
