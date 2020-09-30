@@ -8,6 +8,13 @@ const getArtistSongs = require('../database/getArtistSongs');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /artists:
+ *  get:
+ *    summary: Get all artists
+ *    description: Use to request all artists
+ */
 router.get('/', auth, (req, res, next) => {
   getAllArtists(connection)
     .then((data) => {
@@ -20,6 +27,18 @@ router.get('/', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /artist/{id}:
+ *    get:
+ *      summary: Get songs of an artist
+ *      description: Use to get songs of an artist
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Id of artist
+ *        required: true
+ */
 router.get('/:id', auth, (req, res, next) => {
   getArtistSongs(connection, req.params.id)
     .then((data) => {

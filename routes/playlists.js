@@ -11,6 +11,17 @@ const getPlaylistSongs = require('../database/getPlaylistSongs');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /playlists/add:
+ *  post:
+ *    summary: Add a playlist
+ *    description: Use to add a playlist for a user
+ *    parameters:
+ *      - name: playlistName
+ *        in: body
+ *        description: Name of the playlist
+ */
 router.post('/add', auth, (req, res, next) => {
   const userPlaylist = {
     user_id: req.user.id,
@@ -28,6 +39,20 @@ router.post('/add', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /playlists/add/song:
+ *  post:
+ *    summary: Add a song to a playlist
+ *    description: Use to add a song to a playlist for a user
+ *    parameters:
+ *      - name: playlistId
+ *        in: body
+ *        description: Id of the playlist
+ *      - name: songId
+ *        in: body
+ *        description: Id of the song
+ */
 router.post('/add/song', auth, (req, res, next) => {
   const playlistSong = {
     playlist_id: req.body.playlistId,
@@ -44,6 +69,13 @@ router.post('/add/song', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /playlists:
+ *    get:
+ *      summary: Get playlists of user
+ *      description: Use to get all playlists of a user
+ */
 router.get('/', auth, (req, res, next) => {
   getAllUserPlaylists(connection, req.user.id)
     .then((data) => {
@@ -75,6 +107,18 @@ router.get('/', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /playlist/{id}:
+ *    get:
+ *      summary: Get songs of a playlist
+ *      description: Use to get songs of a playlist
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Id of playlist
+ *        required: true
+ */
 router.get('/:id', auth, (req, res, next) => {
   getPlaylistSongs(connection, req.params.id)
     .then((data) => {

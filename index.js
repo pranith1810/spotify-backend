@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const logger = require('./logger');
 const config = require('./config/config');
 const createDbAndTables = require('./database/dbInitialize');
@@ -12,6 +14,19 @@ const playlists = require('./routes/playlists');
 const likedSongs = require('./routes/likedSongs');
 
 const app = express();
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'Spotify API',
+      description: 'Api for getting albums, songs, creating playlists for a frontend music app.',
+    },
+  },
+  apis: ['./routes/*.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 createDbAndTables()
   .then(() => {

@@ -8,6 +8,24 @@ const getAlbumSongs = require('../database/getAlbumSongs');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /albums:
+ *   get:
+ *     summary: Get all albums
+ *     description: Use to request all albums
+ *     responses:
+ *       '200':
+ *          description: User logged in successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                properties:
+ *                  album_name:
+ *                    type: string
+ *                    description: The name of the album
+ */
 router.get('/', auth, (req, res, next) => {
   getAllAlbums(connection)
     .then((data) => {
@@ -20,6 +38,18 @@ router.get('/', auth, (req, res, next) => {
     });
 });
 
+/**
+ * @swagger
+ * /album/{id}:
+ *    get:
+ *      summary: Get songs of an album
+ *      description: Use to get songs of an album
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Id of album
+ *        required: true
+ */
 router.get('/:id', auth, (req, res, next) => {
   getAlbumSongs(connection, req.params.id)
     .then((data) => {
