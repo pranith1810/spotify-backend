@@ -7,6 +7,17 @@ const getSearchedSongs = require('../database/getSearchedSongs');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /search:
+ *  post:
+ *    summary: Search a song
+ *    description: Use to search a song from the database
+ *    parameters:
+ *      - name: songName
+ *        in: body
+ *        description: Partial or full name of the song
+ */
 router.post('/', auth, (req, res, next) => {
   getSearchedSongs(connection, req.body.songName)
     .then((data) => {
