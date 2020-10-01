@@ -20,8 +20,8 @@ const router = express.Router();
  *        in: body
  *        description: Id of the song
  */
-router.delete('/liked', auth, (req, res, next) => {
-  deleteLikedSong(connection, req.user.id, req.body.songId)
+router.delete('/liked/:songId', auth, (req, res, next) => {
+  deleteLikedSong(connection, req.user.id, req.params.songId)
     .then(() => {
       logger.info('Liked song removed successfully');
       res.status(200).json({ msg: 'Liked song removed successfully' }).end();
@@ -43,8 +43,8 @@ router.delete('/liked', auth, (req, res, next) => {
  *        in: body
  *        description: Id of the playlist
  */
-router.delete('/playlist', auth, (req, res, next) => {
-  deletePlaylist(connection, req.user.id, req.body.playlistId)
+router.delete('/playlist/:playlistId', auth, (req, res, next) => {
+  deletePlaylist(connection, req.user.id, req.params.playlistId)
     .then(() => {
       logger.info('Playlist removed successfully');
       res.status(200).json({ msg: 'Playlist removed successfully' }).end();
@@ -69,8 +69,8 @@ router.delete('/playlist', auth, (req, res, next) => {
  *        in: body
  *        description: Id of the song
  */
-router.delete('/playlist/song', auth, (req, res, next) => {
-  deletePlaylistSong(connection, req.body.playlistId, req.body.songId)
+router.delete('/playlist/song/:playlistId/:songId', auth, (req, res, next) => {
+  deletePlaylistSong(connection, req.params.playlistId, req.params.songId)
     .then(() => {
       logger.info('Playlist song removed successfully');
       res.status(200).json({ msg: 'Playlist song removed successfully' }).end();
