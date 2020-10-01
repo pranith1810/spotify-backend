@@ -44,6 +44,13 @@ function checkFileType(file, cb) {
   cb('Error: Images Only!');
 }
 
+/**
+ * @swagger
+ * /userimage/upload:
+ *  post:
+ *    summary: Add a profile image
+ *    description: Use to add a profile image for a user
+ */
 router.post('/upload', auth, (req, res, next) => {
   profileImgUpload(req, res, (error) => {
     if (error) {

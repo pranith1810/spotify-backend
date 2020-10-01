@@ -14,6 +14,7 @@ const playlists = require('./routes/playlists');
 const likedSongs = require('./routes/likedSongs');
 const userImage = require('./routes/userImage');
 const search = require('./routes/search');
+const deleteRoute = require('./routes/delete');
 
 const app = express();
 
@@ -48,6 +49,7 @@ createDbAndTables()
     app.use('/liked', likedSongs);
     app.use('/userimage', userImage);
     app.use('/search', search);
+    app.use('/delete', deleteRoute);
 
     app.use((req, res, next) => {
       const err = new Error('Page Not Found');

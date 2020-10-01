@@ -1,6 +1,6 @@
 function getUserProfile(connection, userId) {
   return new Promise((resolve, reject) => {
-    const query = `SELECT name, username, img_url FROM users
+    const query = `SELECT id, name, username, img_url, email FROM users
                     WHERE id=?`;
 
     connection.query(query, [userId], (err, data) => {
